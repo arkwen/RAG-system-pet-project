@@ -32,5 +32,29 @@ def extract_text_from_file(file_path:str)->str:
     else:
         raise ValueError(f'Формат {ext} не поддерживается')
 
-def chunk_text(text: str, chunk_size = 500: int, chunk_overlap = 100: int) -> list[str]:
-    
+def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 100) -> list[str]:
+    chunks = []
+    start = 0
+    text_length = len(text)
+
+    while start < text_length:
+        chunk = text[start:start + chunk_size].strip()
+        if chunk:
+            chunks.append(chunk)
+
+        start += chunk_size - chunk_overlap
+
+    return chunks
+
+def get_text_embedding(text: str) -> list[float]:
+    try:
+        response = client.embeddings.create(
+            model = 'nvidia/nemotron-3-embed-1b:free',
+            input = text
+        )
+    except Exception as e:
+        raise RuntimeError(f'Произошла ошибка во время генерации эмбеддинга: {e}')
+
+
+
+
