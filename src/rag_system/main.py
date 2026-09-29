@@ -22,7 +22,7 @@ async def upload_document(file: UploadFile=File(...)):
     if not file.filename or not file.filename.lower().endswith((".txt", ".md", ".pdf")):
         raise HTTPException(status_code=400, detail="Недопустимый формат файла. Разрешены только файлы .txt, .md и .pdf")
     file_name = Path(file.filename).name
-    file_path = os.path.join(UPLOAD_DIR, safe_filename)
+    file_path = os.path.join(UPLOAD_DIR, file_name)
     try:
         file_content = await file.read()
         async with aiofiles.open(file_path, "wb") as buffer:
@@ -38,7 +38,7 @@ async def upload_document(file: UploadFile=File(...)):
             os.remove(file_path)
             raise HTTPException(status_code=400, detail=f"Файл не содержит текста")
         
-        embedding_tasks = [asyncio.to_thread(get_embedding, chunk) for chunk in chunks]
+        embedding_tasks = [asyncio.to_thread(get_text_embedding, chunk) for chunk in chunks]
         embeddings = await asyncio.gather(*embedding_tasks)
 
         await asyncio.to_thread(
