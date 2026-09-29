@@ -17,6 +17,12 @@ class VectorDBManager:
 
         ids = [f'{doc_name}_chunk_{i}' for i in range(len(chunks))]
         metadatas = [{'source_file_name': doc_name} for _ in chunks]
+
+        try:
+            self.collection.delete(where={"source": doc_name})
+        except Exception:
+            pass
+
         self.collection.upsert(
             ids=ids,
             embeddings=embeddings,

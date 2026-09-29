@@ -12,6 +12,7 @@ dependencies = [
     "asyncio>=4.0.0",
     "chromadb>=1.5.9",
     "fastapi>=0.141.1",
+    "fonttools>=4.66.1",
     "openai>=3.20.0",
     "pypdf>=6.19.0",
     "python-multipart>=0.0.32",
