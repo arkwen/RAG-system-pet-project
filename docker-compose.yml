@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
-    environment:
+    environment: 
       - OPENAI_BASE_URL=https://openrouter.ai/api/v1
       - OPENAI_API_KEY=
     volumes:
